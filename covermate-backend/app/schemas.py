@@ -28,3 +28,8 @@ class UserResponse(UserBase):
 
     class Config:
         from_attributes = True
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    dob: Optional[date] = None
+    risk_profile: Optional[Dict] = None
