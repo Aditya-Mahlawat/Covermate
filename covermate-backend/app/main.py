@@ -1,101 +1,53 @@
-from fastapi import FastAPI, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+"""
+CoverMate API – Main Application Entry Point.
 
-from app.database import Base, engine, get_db
-from app import models, schemas
-from app.auth import hash_password, verify_password, create_access_token
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from app.auth import SECRET_KEY, ALGORITHM
+This file creates the FastAPI application, adds middleware (CORS),
+includes all route modules, and creates the database tables on startup.
 
-app = FastAPI()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+To run:
+    cd covermate-backend
+    uvicorn app.main:app --reload
+"""
 
-# create tables
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.database import Base, engine
+from app.config import CORS_ORIGINS
+from app.routes import auth_routes, profile_routes, policy_routes
+
+# ─────────────────── Create App ───────────────────
+app = FastAPI(
+    title="CoverMate API",
+    description="Insurance Comparison, Recommendation & Claim Assistant",
+    version="1.0.0",
+)
+
+# ─────────────────── CORS Middleware ───────────────────
+# This allows the React frontend (running on a different port) to
+# communicate with our API.  Without this, browsers block cross-origin
+# requests for security reasons.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=CORS_ORIGINS,   # e.g. ["http://localhost:3000"]
+    allow_credentials=True,
+    allow_methods=["*"],           # GET, POST, PUT, DELETE, etc.
+    allow_headers=["*"],           # Authorization, Content-Type, etc.
+)
+
+# ─────────────────── Create DB Tables ───────────────────
+# This reads all the model classes (User, Provider, Policy, …) and
+# creates the corresponding PostgreSQL tables if they don't exist yet.
 Base.metadata.create_all(bind=engine)
 
+# ─────────────────── Include Routers ───────────────────
+app.include_router(auth_routes.router)
+app.include_router(profile_routes.router)
+app.include_router(policy_routes.router)
 
-@app.get("/")
+
+# ─────────────────── Root Health Check ───────────────────
+@app.get("/", tags=["Health"])
 def root():
-    return {"message": "CoverMate API is running"}
-
-
-# ---------------- REGISTER ----------------
-@app.post("/auth/register", response_model=schemas.UserResponse)
-def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    existing_user = db.query(models.User).filter(
-        models.User.email == user.email
-    ).first()
-
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
-        )
-
-    new_user = models.User(
-        name=user.name,
-        email=user.email,
-        password=hash_password(user.password),
-        dob=user.dob
-    )
-
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    return new_user
-
-
-# ---------------- LOGIN ----------------
-@app.post("/auth/login")
-def login_user(user: schemas.UserLogin, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(
-        models.User.email == user.email
-    ).first()
-
-    if not db_user or not verify_password(user.password, db_user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
-        )
-
-    access_token = create_access_token(
-        data={"sub": str(db_user.id)}
-    )
-
-    return {
-        "access_token": access_token,
-        "token_type": "bearer"
-    }
-def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    db: Session = Depends(get_db)
-):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("sub")
-
-        if user_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token"
-            )
-
-    except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token"
-        )
-
-    user = db.query(models.User).filter(models.User.id == int(user_id)).first()
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found"
-        )
-
-    return user
-@app.get("/auth/me", response_model=schemas.UserResponse)
-def read_current_user(current_user: models.User = Depends(get_current_user)):
-    return current_user
+    """Simple health-check endpoint to verify the API is running."""
+    return {"message": "CoverMate API is running 🚀"}
