@@ -13,7 +13,14 @@ For responses, schemas control which fields are sent back to the client
 
 from pydantic import BaseModel, EmailStr
 from datetime import date
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
+
+
+# ━━━━━━━━━━━━━━━━━ GENERIC SCHEMAS ━━━━━━━━━━━━━━━━━
+
+class MessageResponse(BaseModel):
+    """Generic message response for success/info messages."""
+    message: str
 
 
 # ━━━━━━━━━━━━━━━━━ AUTH SCHEMAS ━━━━━━━━━━━━━━━━━
@@ -127,3 +134,55 @@ class PolicyResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+# ━━━━━━━━━━━━━━━━━ USER POLICY SCHEMAS ━━━━━━━━━━━━━━━━━
+
+class UserPolicyCreate(BaseModel):
+    """What the client sends to enroll in a policy."""
+    policy_id: int
+
+
+class UserPolicyResponse(BaseModel):
+    """Full details of a user's enrolled policy."""
+    id: int
+    policy_id: int
+    policy_number: Optional[str] = None
+    start_date: Optional[date] = None
+    end_date: Optional[date] = None
+    premium: Optional[float] = None
+    status: str
+    auto_renew: bool
+    policy: Optional[PolicyResponse] = None
+
+    class Config:
+        from_attributes = True
+
+
+# ━━━━━━━━━━━━━━━━━ COMPARE SCHEMAS ━━━━━━━━━━━━━━━━━
+
+class CompareRequest(BaseModel):
+    """Client sends 2–3 policy IDs to compare side-by-side."""
+    policy_ids: List[int]
+
+
+# ━━━━━━━━━━━━━━━━━ QUOTE SCHEMAS ━━━━━━━━━━━━━━━━━
+
+class QuoteRequest(BaseModel):
+    """Parameters for premium calculation."""
+    policy_id: int
+    age: int
+    coverage_amount: Optional[float] = None
+    term_months: Optional[int] = None
+
+
+class QuoteResponse(BaseModel):
+    """Calculated premium quote with breakdown."""
+    policy_id: int
+    policy_title: str
+    base_premium: float
+    age_adjustment_pct: float
+    adjusted_premium: float
+    term_months: int
+    total_cost: float
+    annual_cost: float
+    breakdown: Dict[str, Any]

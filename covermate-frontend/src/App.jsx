@@ -8,6 +8,9 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import RiskProfile from './pages/RiskProfile';
 import Policies from './pages/Policies';
+import Compare from './pages/Compare';
+import Quote from './pages/Quote';
+import MyPolicies from './pages/MyPolicies';
 
 export default function App() {
   return (
@@ -20,38 +23,13 @@ export default function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Protected Routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/preferences"
-            element={
-              <ProtectedRoute>
-                <RiskProfile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/policies"
-            element={
-              <ProtectedRoute>
-                <Policies />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/preferences" element={<ProtectedRoute><RiskProfile /></ProtectedRoute>} />
+          <Route path="/policies" element={<ProtectedRoute><Policies /></ProtectedRoute>} />
+          <Route path="/compare" element={<ProtectedRoute><Compare /></ProtectedRoute>} />
+          <Route path="/quote" element={<ProtectedRoute><Quote /></ProtectedRoute>} />
+          <Route path="/my-policies" element={<ProtectedRoute><MyPolicies /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />

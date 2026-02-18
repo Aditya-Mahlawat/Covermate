@@ -36,6 +36,14 @@ export default function Dashboard() {
             hoverBorder: 'rgba(34,197,94,0.25)',
         },
         {
+            title: 'My Policies',
+            desc: 'View and manage your enrolled insurance policies',
+            icon: '🛡️',
+            path: '/my-policies',
+            gradient: 'linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0.04) 100%)',
+            hoverBorder: 'rgba(139,92,246,0.25)',
+        },
+        {
             title: 'My Claims',
             desc: 'File and track your insurance claims',
             icon: '📁',

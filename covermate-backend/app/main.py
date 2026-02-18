@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.config import CORS_ORIGINS
-from app.routes import auth_routes, profile_routes, policy_routes
+from app.routes import auth_routes, profile_routes, policy_routes, user_policy_routes
 
 # ─────────────────── Create App ───────────────────
 app = FastAPI(
@@ -44,6 +44,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(auth_routes.router)
 app.include_router(profile_routes.router)
 app.include_router(policy_routes.router)
+app.include_router(user_policy_routes.router)
 
 
 # ─────────────────── Root Health Check ───────────────────

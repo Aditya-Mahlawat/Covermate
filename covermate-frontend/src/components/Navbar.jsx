@@ -60,7 +60,6 @@ export default function Navbar() {
                     style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.5rem',
                         textDecoration: 'none',
                         flexShrink: 0,
                     }}
@@ -68,14 +67,8 @@ export default function Navbar() {
                     <img
                         src="/logo.png"
                         alt="CoverMate"
-                        style={{ height: '2.25rem', width: 'auto' }}
+                        style={{ height: '2.75rem', width: 'auto' }}
                     />
-                    <span
-                        className="gradient-text hidden sm:inline"
-                        style={{ fontSize: '1.125rem', fontWeight: 800, letterSpacing: '-0.02em' }}
-                    >
-                        CoverMate
-                    </span>
                 </Link>
 
                 {/* Main Links */}
