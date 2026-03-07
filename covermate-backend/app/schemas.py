@@ -186,3 +186,18 @@ class QuoteResponse(BaseModel):
     total_cost: float
     annual_cost: float
     breakdown: Dict[str, Any]
+
+
+# ━━━━━━━━━━━━━━━━━ RECOMMENDATION SCHEMAS ━━━━━━━━━━━━━━━━━
+
+class RecommendationResponse(BaseModel):
+    """A scored policy recommendation with reasoning."""
+    id: int
+    user_id: int
+    policy_id: int
+    score: float
+    reason: str
+    policy: Optional[PolicyResponse] = None
+
+    class Config:
+        from_attributes = True

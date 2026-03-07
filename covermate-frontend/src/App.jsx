@@ -11,6 +11,7 @@ import Policies from './pages/Policies';
 import Compare from './pages/Compare';
 import Quote from './pages/Quote';
 import MyPolicies from './pages/MyPolicies';
+import Recommendations from './pages/Recommendations';
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/compare" element={<ProtectedRoute><Compare /></ProtectedRoute>} />
           <Route path="/quote" element={<ProtectedRoute><Quote /></ProtectedRoute>} />
           <Route path="/my-policies" element={<ProtectedRoute><MyPolicies /></ProtectedRoute>} />
+          <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />

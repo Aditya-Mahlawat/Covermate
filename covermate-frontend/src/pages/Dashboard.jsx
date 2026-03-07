@@ -5,9 +5,9 @@ export default function Dashboard() {
     const { user } = useAuth();
 
     const stats = [
-        { label: 'Active Policies', value: '0', icon: '🛡️', color: '#6366f1' },
-        { label: 'Open Claims', value: '0', icon: '📝', color: '#06b6d4' },
-        { label: 'Recommendations', value: '—', icon: '⭐', color: '#f59e0b' },
+        { label: 'Active Policies', value: '0', icon: '🛡️', color: '#7c3aed' },
+        { label: 'Open Claims', value: '0', icon: '📝', color: '#3b82f6' },
+        { label: 'Recommendations', value: '—', icon: '⭐', color: '#f97316' },
     ];
 
     const quickLinks = [
@@ -16,16 +16,16 @@ export default function Dashboard() {
             desc: 'View and edit your personal information',
             icon: '👤',
             path: '/profile',
-            gradient: 'linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(99,102,241,0.04) 100%)',
-            hoverBorder: 'rgba(99,102,241,0.25)',
+            gradient: 'linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0.04) 100%)',
+            hoverBorder: 'rgba(124,58,237,0.3)',
         },
         {
             title: 'Preferences',
             desc: 'Set your insurance preferences & risk profile',
             icon: '⚙️',
             path: '/preferences',
-            gradient: 'linear-gradient(135deg, rgba(6,182,212,0.12) 0%, rgba(6,182,212,0.04) 100%)',
-            hoverBorder: 'rgba(6,182,212,0.25)',
+            gradient: 'linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 100%)',
+            hoverBorder: 'rgba(59,130,246,0.3)',
         },
         {
             title: 'Browse Policies',
@@ -33,23 +33,31 @@ export default function Dashboard() {
             icon: '📋',
             path: '/policies',
             gradient: 'linear-gradient(135deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.04) 100%)',
-            hoverBorder: 'rgba(34,197,94,0.25)',
+            hoverBorder: 'rgba(34,197,94,0.3)',
         },
         {
             title: 'My Policies',
             desc: 'View and manage your enrolled insurance policies',
             icon: '🛡️',
             path: '/my-policies',
-            gradient: 'linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0.04) 100%)',
-            hoverBorder: 'rgba(139,92,246,0.25)',
+            gradient: 'linear-gradient(135deg, rgba(167,139,250,0.12) 0%, rgba(167,139,250,0.04) 100%)',
+            hoverBorder: 'rgba(167,139,250,0.3)',
+        },
+        {
+            title: 'Recommendations',
+            desc: 'Personalized policy suggestions based on your profile',
+            icon: '⭐',
+            path: '/recommendations',
+            gradient: 'linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(249,115,22,0.04) 100%)',
+            hoverBorder: 'rgba(249,115,22,0.3)',
         },
         {
             title: 'My Claims',
             desc: 'File and track your insurance claims',
             icon: '📁',
             path: '#',
-            gradient: 'linear-gradient(135deg, rgba(245,158,11,0.12) 0%, rgba(245,158,11,0.04) 100%)',
-            hoverBorder: 'rgba(245,158,11,0.25)',
+            gradient: 'linear-gradient(135deg, rgba(239,68,68,0.12) 0%, rgba(239,68,68,0.04) 100%)',
+            hoverBorder: 'rgba(239,68,68,0.3)',
             comingSoon: true,
         },
     ];
@@ -63,7 +71,7 @@ export default function Dashboard() {
                         Welcome back,{' '}
                         <span className="gradient-text">{user?.name?.split(' ')[0]}</span>! 👋
                     </h1>
-                    <p style={{ color: '#94a3b8', fontSize: '1.0625rem' }}>
+                    <p style={{ color: '#9898cc', fontSize: '1.0625rem' }}>
                         Here's your insurance dashboard overview.
                     </p>
                 </div>
@@ -93,7 +101,7 @@ export default function Dashboard() {
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     fontSize: '1.375rem',
-                                    background: `${s.color}15`,
+                                    background: `${s.color}18`,
                                     flexShrink: 0,
                                 }}
                             >
@@ -103,7 +111,7 @@ export default function Dashboard() {
                                 <p style={{ fontSize: '1.625rem', fontWeight: 700, color: 'white', lineHeight: 1.2 }}>
                                     {s.value}
                                 </p>
-                                <p style={{ fontSize: '0.8125rem', color: '#64748b', marginTop: '0.125rem' }}>
+                                <p style={{ fontSize: '0.8125rem', color: '#6868a0', marginTop: '0.125rem' }}>
                                     {s.label}
                                 </p>
                             </div>
@@ -114,7 +122,7 @@ export default function Dashboard() {
                 {/* ────── Quick Actions ────── */}
                 <h2
                     className="animate-fade-in-up-delay"
-                    style={{ fontSize: '1.125rem', fontWeight: 700, color: '#e2e8f0', marginBottom: '1.25rem' }}
+                    style={{ fontSize: '1.125rem', fontWeight: 700, color: '#e0e0ff', marginBottom: '1.25rem' }}
                 >
                     Quick Actions
                 </h2>
@@ -137,11 +145,11 @@ export default function Dashboard() {
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.transform = 'translateY(-3px)';
                                 e.currentTarget.style.borderColor = link.hoverBorder;
-                                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)';
+                                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)';
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.08)';
+                                e.currentTarget.style.borderColor = 'rgba(124, 58, 237, 0.12)';
                                 e.currentTarget.style.boxShadow = '';
                             }}
                         >
@@ -153,8 +161,8 @@ export default function Dashboard() {
                                         style={{
                                             fontSize: '0.625rem',
                                             fontWeight: 600,
-                                            background: 'rgba(148,163,184,0.1)',
-                                            color: '#64748b',
+                                            background: 'rgba(124, 58, 237, 0.15)',
+                                            color: '#9898cc',
                                             padding: '0.2rem 0.5rem',
                                             borderRadius: '0.375rem',
                                             letterSpacing: '0.06em',
@@ -165,7 +173,7 @@ export default function Dashboard() {
                                     </span>
                                 )}
                             </div>
-                            <p style={{ fontSize: '0.8125rem', color: '#64748b', lineHeight: 1.5, paddingLeft: '2.25rem' }}>
+                            <p style={{ fontSize: '0.8125rem', color: '#6868a0', lineHeight: 1.5, paddingLeft: '2.25rem' }}>
                                 {link.desc}
                             </p>
                         </Link>
@@ -178,7 +186,7 @@ export default function Dashboard() {
                         className="glass-card animate-fade-in-up-delay-2"
                         style={{
                             padding: '1.75rem 2rem',
-                            borderLeft: '3px solid #f59e0b',
+                            borderLeft: '3px solid #f97316',
                             display: 'flex',
                             gap: '1.25rem',
                             alignItems: 'flex-start',
@@ -186,10 +194,10 @@ export default function Dashboard() {
                     >
                         <span style={{ fontSize: '1.75rem', lineHeight: 1 }}>💡</span>
                         <div>
-                            <h3 style={{ fontWeight: 600, color: '#fde68a', marginBottom: '0.375rem', fontSize: '1rem' }}>
+                            <h3 style={{ fontWeight: 600, color: '#fbbf24', marginBottom: '0.375rem', fontSize: '1rem' }}>
                                 Complete your risk profile
                             </h3>
-                            <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1rem', lineHeight: 1.6 }}>
+                            <p style={{ fontSize: '0.875rem', color: '#6868a0', marginBottom: '1rem', lineHeight: 1.6 }}>
                                 Set your insurance preferences so we can recommend the best policies for you.
                             </p>
                             <Link to="/preferences" className="btn-secondary">

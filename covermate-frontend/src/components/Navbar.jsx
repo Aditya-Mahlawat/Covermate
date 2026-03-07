@@ -15,7 +15,6 @@ export default function Navbar() {
         navigate('/login');
     };
 
-    // Close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -26,7 +25,6 @@ export default function Navbar() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Close dropdown on route change
     useEffect(() => {
         setDropdownOpen(false);
     }, [location.pathname]);
@@ -36,6 +34,7 @@ export default function Navbar() {
     const mainLinks = [
         { path: '/', label: 'Dashboard', icon: '🏠' },
         { path: '/policies', label: 'Policies', icon: '📋' },
+        { path: '/recommendations', label: 'For You', icon: '⭐' },
     ];
 
     return (
@@ -65,9 +64,9 @@ export default function Navbar() {
                     }}
                 >
                     <img
-                        src="/logo.png"
+                        src="/logo.svg"
                         alt="CoverMate"
-                        style={{ height: '2.75rem', width: 'auto' }}
+                        style={{ height: '2rem', width: 'auto' }}
                     />
                 </Link>
 
@@ -86,22 +85,22 @@ export default function Navbar() {
                                     fontWeight: isActive ? 600 : 500,
                                     textDecoration: 'none',
                                     transition: 'all 0.2s ease',
-                                    background: isActive ? 'rgba(99, 102, 241, 0.12)' : 'transparent',
-                                    color: isActive ? '#a5b4fc' : '#94a3b8',
+                                    background: isActive ? 'rgba(124, 58, 237, 0.15)' : 'transparent',
+                                    color: isActive ? '#c4b5fd' : '#9898cc',
                                     display: 'flex',
                                     alignItems: 'center',
                                     gap: '0.375rem',
                                 }}
                                 onMouseEnter={(e) => {
                                     if (!isActive) {
-                                        e.currentTarget.style.background = 'rgba(148, 163, 184, 0.06)';
-                                        e.currentTarget.style.color = '#e2e8f0';
+                                        e.currentTarget.style.background = 'rgba(124, 58, 237, 0.08)';
+                                        e.currentTarget.style.color = '#e0e0ff';
                                     }
                                 }}
                                 onMouseLeave={(e) => {
                                     if (!isActive) {
                                         e.currentTarget.style.background = 'transparent';
-                                        e.currentTarget.style.color = '#94a3b8';
+                                        e.currentTarget.style.color = '#9898cc';
                                     }
                                 }}
                             >
@@ -121,9 +120,9 @@ export default function Navbar() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.75rem',
-                        background: dropdownOpen ? 'rgba(99, 102, 241, 0.08)' : 'transparent',
+                        background: dropdownOpen ? 'rgba(124, 58, 237, 0.12)' : 'transparent',
                         border: '1px solid',
-                        borderColor: dropdownOpen ? 'rgba(99, 102, 241, 0.2)' : 'transparent',
+                        borderColor: dropdownOpen ? 'rgba(124, 58, 237, 0.25)' : 'transparent',
                         borderRadius: '0.75rem',
                         padding: '0.375rem 0.75rem 0.375rem 0.375rem',
                         cursor: 'pointer',
@@ -131,8 +130,8 @@ export default function Navbar() {
                     }}
                     onMouseEnter={(e) => {
                         if (!dropdownOpen) {
-                            e.currentTarget.style.background = 'rgba(148, 163, 184, 0.06)';
-                            e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.1)';
+                            e.currentTarget.style.background = 'rgba(124, 58, 237, 0.08)';
+                            e.currentTarget.style.borderColor = 'rgba(124, 58, 237, 0.15)';
                         }
                     }}
                     onMouseLeave={(e) => {
@@ -154,7 +153,7 @@ export default function Navbar() {
                             fontSize: '0.75rem',
                             fontWeight: 700,
                             color: 'white',
-                            background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+                            background: 'linear-gradient(135deg, #7c3aed, #f97316)',
                             flexShrink: 0,
                         }}
                     >
@@ -162,7 +161,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Name */}
-                    <span className="hidden md:inline" style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#e2e8f0' }}>
+                    <span className="hidden md:inline" style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#e0e0ff' }}>
                         {user?.name?.split(' ')[0]}
                     </span>
 
@@ -178,7 +177,7 @@ export default function Navbar() {
                             flexShrink: 0,
                         }}
                     >
-                        <path d="M3 4.5L6 7.5L9 4.5" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 4.5L6 7.5L9 4.5" stroke="#6868a0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </button>
 
@@ -191,11 +190,11 @@ export default function Navbar() {
                             top: 'calc(100% + 0.5rem)',
                             right: 0,
                             width: '14rem',
-                            background: 'rgba(30, 41, 59, 0.95)',
-                            backdropFilter: 'blur(20px)',
-                            border: '1px solid rgba(148, 163, 184, 0.1)',
+                            background: 'rgba(20, 20, 56, 0.95)',
+                            backdropFilter: 'blur(24px)',
+                            border: '1px solid rgba(124, 58, 237, 0.15)',
                             borderRadius: '0.875rem',
-                            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0,0,0,0.1)',
+                            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(124, 58, 237, 0.08)',
                             padding: '0.5rem',
                             zIndex: 100,
                         }}
@@ -204,12 +203,12 @@ export default function Navbar() {
                         <div
                             style={{
                                 padding: '0.75rem 0.75rem 0.625rem',
-                                borderBottom: '1px solid rgba(148,163,184,0.08)',
+                                borderBottom: '1px solid rgba(124, 58, 237, 0.1)',
                                 marginBottom: '0.375rem',
                             }}
                         >
-                            <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#e2e8f0' }}>{user?.name}</p>
-                            <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>{user?.email}</p>
+                            <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#e0e0ff' }}>{user?.name}</p>
+                            <p style={{ fontSize: '0.75rem', color: '#6868a0', marginTop: '0.125rem' }}>{user?.email}</p>
                         </div>
 
                         {/* Links */}
@@ -228,17 +227,17 @@ export default function Navbar() {
                                     borderRadius: '0.5rem',
                                     fontSize: '0.8125rem',
                                     fontWeight: 500,
-                                    color: location.pathname === item.path ? '#a5b4fc' : '#cbd5e1',
+                                    color: location.pathname === item.path ? '#c4b5fd' : '#d0d0e8',
                                     textDecoration: 'none',
                                     transition: 'all 0.15s ease',
-                                    background: location.pathname === item.path ? 'rgba(99,102,241,0.08)' : 'transparent',
+                                    background: location.pathname === item.path ? 'rgba(124, 58, 237, 0.12)' : 'transparent',
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.currentTarget.style.background = 'rgba(148,163,184,0.08)';
+                                    e.currentTarget.style.background = 'rgba(124, 58, 237, 0.1)';
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.background =
-                                        location.pathname === item.path ? 'rgba(99,102,241,0.08)' : 'transparent';
+                                        location.pathname === item.path ? 'rgba(124, 58, 237, 0.12)' : 'transparent';
                                 }}
                             >
                                 <span>{item.icon}</span>
@@ -247,7 +246,7 @@ export default function Navbar() {
                         ))}
 
                         {/* Divider */}
-                        <div style={{ borderTop: '1px solid rgba(148,163,184,0.08)', margin: '0.375rem 0' }} />
+                        <div style={{ borderTop: '1px solid rgba(124, 58, 237, 0.1)', margin: '0.375rem 0' }} />
 
                         {/* Logout */}
                         <button
@@ -270,7 +269,7 @@ export default function Navbar() {
                                 textAlign: 'left',
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'rgba(239,68,68,0.08)';
+                                e.currentTarget.style.background = 'rgba(239,68,68,0.1)';
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.background = 'transparent';

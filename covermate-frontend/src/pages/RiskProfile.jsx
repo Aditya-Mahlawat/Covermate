@@ -4,6 +4,16 @@ import { useAuth } from '../context/AuthContext';
 
 const AGE_GROUPS = ['18-25', '25-35', '35-45', '45-55', '55+'];
 const INCOME_BRACKETS = ['Below 3L', '₹3-5L', '₹5-10L', '₹10-20L', '₹20L+'];
+const RISK_APPETITES = [
+    { key: 'low', label: 'Low', desc: 'Minimize risk, prefer guaranteed returns', icon: '🛡️' },
+    { key: 'medium', label: 'Medium', desc: 'Balanced risk and coverage', icon: '⚖️' },
+    { key: 'high', label: 'High', desc: 'Comfortable with higher deductibles for lower premiums', icon: '🎯' },
+];
+const COVERAGE_PRIORITIES = [
+    { key: 'low', label: 'Basic', desc: 'Essential coverage only', icon: '📦' },
+    { key: 'medium', label: 'Standard', desc: 'Good coverage at fair price', icon: '📋' },
+    { key: 'high', label: 'Premium', desc: 'Maximum coverage, best protection', icon: '👑' },
+];
 const POLICY_TYPES = [
     { key: 'health', label: 'Health', icon: '🏥' },
     { key: 'life', label: 'Life', icon: '❤️' },
@@ -20,6 +30,8 @@ export default function RiskProfile() {
     const [income, setIncome] = useState('');
     const [dependents, setDependents] = useState(false);
     const [preferred, setPreferred] = useState([]);
+    const [riskAppetite, setRiskAppetite] = useState('medium');
+    const [coveragePriority, setCoveragePriority] = useState('medium');
     const [msg, setMsg] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -35,6 +47,8 @@ export default function RiskProfile() {
                     setIncome(rp.income_bracket || '');
                     setDependents(rp.has_dependents || false);
                     setPreferred(rp.preferred_types || []);
+                    setRiskAppetite(rp.risk_appetite || 'medium');
+                    setCoveragePriority(rp.coverage_priority || 'medium');
                 }
             })
             .catch(() => { })
@@ -60,6 +74,8 @@ export default function RiskProfile() {
                 income_bracket: income,
                 has_dependents: dependents,
                 preferred_types: preferred,
+                risk_appetite: riskAppetite,
+                coverage_priority: coveragePriority,
             });
             await refreshUser();
             setMsg('Preferences saved successfully!');
@@ -86,7 +102,7 @@ export default function RiskProfile() {
                     <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.375rem' }}>
                         Insurance Preferences
                     </h1>
-                    <p style={{ color: '#94a3b8' }}>
+                    <p style={{ color: 'var(--clr-text-muted)' }}>
                         Help us recommend the best policies by telling us about yourself.
                     </p>
                 </div>
@@ -144,7 +160,7 @@ export default function RiskProfile() {
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <div>
                                         <p style={{ fontWeight: 600, fontSize: '0.9375rem', marginBottom: '0.25rem' }}>🚬 Smoker</p>
-                                        <p style={{ fontSize: '0.75rem', color: '#475569' }}>Do you smoke or use tobacco?</p>
+                                        <p style={{ fontSize: '0.75rem', color: 'var(--clr-text-dim)' }}>Do you smoke or use tobacco?</p>
                                     </div>
                                     <div
                                         className="toggle-track"
@@ -170,7 +186,7 @@ export default function RiskProfile() {
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <div>
                                         <p style={{ fontWeight: 600, fontSize: '0.9375rem', marginBottom: '0.25rem' }}>👨‍👩‍👧 Dependents</p>
-                                        <p style={{ fontSize: '0.75rem', color: '#475569' }}>Do you have family dependents?</p>
+                                        <p style={{ fontSize: '0.75rem', color: 'var(--clr-text-dim)' }}>Do you have family dependents?</p>
                                     </div>
                                     <div
                                         className="toggle-track"
@@ -182,6 +198,58 @@ export default function RiskProfile() {
                                         ></div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* ── Risk Appetite ── */}
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label className="label">Risk Appetite</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                                {RISK_APPETITES.map((ra) => (
+                                    <div
+                                        key={ra.key}
+                                        onClick={() => setRiskAppetite(ra.key)}
+                                        className="toggle-card"
+                                        style={{
+                                            borderColor: riskAppetite === ra.key ? 'rgba(99,102,241,0.35)' : undefined,
+                                            background: riskAppetite === ra.key ? 'rgba(99,102,241,0.08)' : undefined,
+                                            textAlign: 'center', padding: '1.25rem 0.75rem',
+                                        }}
+                                    >
+                                        <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.375rem' }}>{ra.icon}</span>
+                                        <p style={{
+                                            fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.25rem',
+                                            color: riskAppetite === ra.key ? 'var(--clr-primary-light)' : 'var(--clr-text)',
+                                        }}>{ra.label}</p>
+                                        <p style={{ fontSize: '0.6875rem', color: 'var(--clr-text-dim)', lineHeight: 1.4 }}>{ra.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* ── Coverage Priority ── */}
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label className="label">Coverage Priority</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                                {COVERAGE_PRIORITIES.map((cp) => (
+                                    <div
+                                        key={cp.key}
+                                        onClick={() => setCoveragePriority(cp.key)}
+                                        className="toggle-card"
+                                        style={{
+                                            borderColor: coveragePriority === cp.key ? 'rgba(245,158,11,0.35)' : undefined,
+                                            background: coveragePriority === cp.key ? 'rgba(245,158,11,0.08)' : undefined,
+                                            textAlign: 'center', padding: '1.25rem 0.75rem',
+                                        }}
+                                    >
+                                        <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '0.375rem' }}>{cp.icon}</span>
+                                        <p style={{
+                                            fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.25rem',
+                                            color: coveragePriority === cp.key ? '#fbbf24' : 'var(--clr-text)',
+                                        }}>{cp.label}</p>
+                                        <p style={{ fontSize: '0.6875rem', color: 'var(--clr-text-dim)', lineHeight: 1.4 }}>{cp.desc}</p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
