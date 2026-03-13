@@ -201,3 +201,40 @@ class RecommendationResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ━━━━━━━━━━━━━━━━━ CLAIM SCHEMAS ━━━━━━━━━━━━━━━━━
+
+class ClaimDocumentResponse(BaseModel):
+    """Uploaded supporting document for a claim."""
+    id: int
+    claim_id: int
+    file_url: str
+    doc_type: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class ClaimCreate(BaseModel):
+    """What the client sends when filing a new claim."""
+    user_policy_id: int
+    claim_type: str
+    incident_date: date
+    amount_claimed: float
+
+
+class ClaimResponse(BaseModel):
+    """Full details of a filed claim."""
+    id: int
+    user_policy_id: int
+    claim_number: Optional[str] = None
+    claim_type: Optional[str] = None
+    incident_date: Optional[date] = None
+    amount_claimed: Optional[float] = None
+    status: str
+    documents: List[ClaimDocumentResponse] = []
+    user_policy: Optional[UserPolicyResponse] = None
+
+    class Config:
+        from_attributes = True

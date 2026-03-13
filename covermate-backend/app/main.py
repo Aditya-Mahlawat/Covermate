@@ -14,7 +14,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.config import CORS_ORIGINS
-from app.routes import auth_routes, profile_routes, policy_routes, user_policy_routes, recommendation_routes
+from app.routes import auth_routes, profile_routes, policy_routes, user_policy_routes, recommendation_routes, claims_routes
+from fastapi.staticfiles import StaticFiles
 
 # ─────────────────── Create App ───────────────────
 app = FastAPI(
@@ -46,6 +47,12 @@ app.include_router(profile_routes.router)
 app.include_router(policy_routes.router)
 app.include_router(user_policy_routes.router)
 app.include_router(recommendation_routes.router)
+app.include_router(claims_routes.router)
+
+# ─────────────────── Mount Static Files ───────────────────
+import os
+os.makedirs("uploads", exist_ok=True)
+app.mount("/api/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
 # ─────────────────── Root Health Check ───────────────────

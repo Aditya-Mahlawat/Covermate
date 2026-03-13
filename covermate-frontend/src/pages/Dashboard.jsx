@@ -1,12 +1,24 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getMyClaims } from '../services/claimService';
 
 export default function Dashboard() {
     const { user } = useAuth();
+    const [openClaimsCount, setOpenClaimsCount] = useState(0);
+
+    useEffect(() => {
+        getMyClaims()
+            .then(claims => {
+                const active = claims.filter(c => !['approved', 'rejected', 'paid'].includes(c.status));
+                setOpenClaimsCount(active.length);
+            })
+            .catch(() => {});
+    }, []);
 
     const stats = [
-        { label: 'Active Policies', value: '0', icon: '🛡️', color: '#7c3aed' },
-        { label: 'Open Claims', value: '0', icon: '📝', color: '#3b82f6' },
+        { label: 'Active Policies', value: '—', icon: '🛡️', color: '#7c3aed' },
+        { label: 'Open Claims', value: openClaimsCount.toString(), icon: '📝', color: '#3b82f6' },
         { label: 'Recommendations', value: '—', icon: '⭐', color: '#f97316' },
     ];
 
@@ -55,10 +67,9 @@ export default function Dashboard() {
             title: 'My Claims',
             desc: 'File and track your insurance claims',
             icon: '📁',
-            path: '#',
+            path: '/claims',
             gradient: 'linear-gradient(135deg, rgba(239,68,68,0.12) 0%, rgba(239,68,68,0.04) 100%)',
             hoverBorder: 'rgba(239,68,68,0.3)',
-            comingSoon: true,
         },
     ];
 

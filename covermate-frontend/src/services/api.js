@@ -3,8 +3,10 @@ import axios from 'axios';
 // ─── Create Axios Instance ───
 // All API calls go through this instance so headers and
 // token refresh are handled automatically.
+export const API_URL = 'http://localhost:8000';
+
 const api = axios.create({
-    baseURL: 'http://localhost:8001',
+    baseURL: API_URL,
     headers: { 'Content-Type': 'application/json' },
 });
 
@@ -32,7 +34,7 @@ api.interceptors.response.use(
             const refreshToken = localStorage.getItem('refresh_token');
             if (refreshToken) {
                 try {
-                    const res = await axios.post('http://localhost:8001/auth/refresh', {
+                    const res = await axios.post(`${API_URL}/auth/refresh`, {
                         refresh_token: refreshToken,
                     });
 

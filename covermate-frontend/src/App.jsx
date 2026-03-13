@@ -12,6 +12,9 @@ import Compare from './pages/Compare';
 import Quote from './pages/Quote';
 import MyPolicies from './pages/MyPolicies';
 import Recommendations from './pages/Recommendations';
+import Claims from './pages/Claims';
+import ClaimFilingWizard from './pages/ClaimFilingWizard';
+import ClaimDetails from './pages/ClaimDetails';
 
 export default function App() {
   return (
@@ -32,6 +35,9 @@ export default function App() {
           <Route path="/quote" element={<ProtectedRoute><Quote /></ProtectedRoute>} />
           <Route path="/my-policies" element={<ProtectedRoute><MyPolicies /></ProtectedRoute>} />
           <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} />
+          <Route path="/claims" element={<ProtectedRoute><Claims /></ProtectedRoute>} />
+          <Route path="/claims/new" element={<ProtectedRoute><ClaimFilingWizard /></ProtectedRoute>} />
+          <Route path="/claims/:id" element={<ProtectedRoute><ClaimDetails /></ProtectedRoute>} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
