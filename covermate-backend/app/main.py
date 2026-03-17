@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
 from app.config import CORS_ORIGINS
-from app.routes import auth_routes, profile_routes, policy_routes, user_policy_routes, recommendation_routes, claims_routes
+from app.routes import auth_routes, profile_routes, policy_routes, user_policy_routes, recommendation_routes, claims_routes, admin_routes
 from fastapi.staticfiles import StaticFiles
 
 # ─────────────────── Create App ───────────────────
@@ -48,6 +48,7 @@ app.include_router(policy_routes.router)
 app.include_router(user_policy_routes.router)
 app.include_router(recommendation_routes.router)
 app.include_router(claims_routes.router)
+app.include_router(admin_routes.router)
 
 # ─────────────────── Mount Static Files ───────────────────
 import os

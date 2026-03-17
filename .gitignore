@@ -1,1 +1,28 @@
-Python_Insurance Comparison, Recommendation & Claim Assistant .pdf
+# ─── Python / Backend ───
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.env
+uploads/
+
+# ─── Node / Frontend ───
+node_modules/
+dist/
+
+# ─── IDE / Editor ───
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── OS ───
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Test artifacts ───
+test_qa.py
+test.txt
+pdf_content.txt

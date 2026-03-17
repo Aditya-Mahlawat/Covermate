@@ -12,7 +12,7 @@ For responses, schemas control which fields are sent back to the client
 """
 
 from pydantic import BaseModel, EmailStr
-from datetime import date
+from datetime import date, datetime
 from typing import Optional, Dict, Any, List
 
 
@@ -211,6 +211,7 @@ class ClaimDocumentResponse(BaseModel):
     claim_id: int
     file_url: str
     doc_type: Optional[str] = None
+    uploaded_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -224,6 +225,18 @@ class ClaimCreate(BaseModel):
     amount_claimed: float
 
 
+class ClaimUpdate(BaseModel):
+    """Partial update for an existing claim (only draft/submitted)."""
+    claim_type: Optional[str] = None
+    incident_date: Optional[date] = None
+    amount_claimed: Optional[float] = None
+
+
+class ClaimStatusUpdate(BaseModel):
+    """Admin: update claim status (under_review, approved, rejected, paid)."""
+    status: str
+
+
 class ClaimResponse(BaseModel):
     """Full details of a filed claim."""
     id: int
@@ -233,6 +246,7 @@ class ClaimResponse(BaseModel):
     incident_date: Optional[date] = None
     amount_claimed: Optional[float] = None
     status: str
+    created_at: Optional[datetime] = None
     documents: List[ClaimDocumentResponse] = []
     user_policy: Optional[UserPolicyResponse] = None
 
