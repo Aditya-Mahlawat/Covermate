@@ -22,11 +22,11 @@ from app.database import get_db
 from app import models, schemas
 from app.deps import get_current_user
 from app.email_service import dispatch_email
+from app.storage import POLICY_UPLOADS_DIR
 
 router = APIRouter(tags=["Policy Documents & Renewals"])
 
-UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "uploads", "policies")
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(POLICY_UPLOADS_DIR, exist_ok=True)
 
 
 def _generate_policy_number(user_id: int, policy_id: int) -> str:
@@ -75,7 +75,7 @@ def generate_policy_pdf(
         from reportlab.pdfgen import canvas as pdf_canvas
 
         filename = f"policy_{up.policy_number}_{uuid.uuid4().hex[:6]}.pdf"
-        filepath = os.path.join(UPLOAD_DIR, filename)
+        filepath = os.path.join(POLICY_UPLOADS_DIR, filename)
 
         # ── Color palette ──
         PURPLE    = colors.HexColor("#7c3aed")
@@ -283,7 +283,7 @@ def generate_policy_pdf(
     except ImportError:
         # If reportlab is not installed, create a plain text fallback
         filename = f"policy_{up.policy_number}_{uuid.uuid4().hex[:6]}.txt"
-        filepath = os.path.join(UPLOAD_DIR, filename)
+        filepath = os.path.join(POLICY_UPLOADS_DIR, filename)
         with open(filepath, "w") as f:
             f.write(f"COVERMATE POLICY DOCUMENT\n{'='*40}\n")
             f.write(f"Policy Number: {up.policy_number}\n")

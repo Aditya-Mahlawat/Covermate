@@ -23,6 +23,7 @@ from app import models, schemas
 from app.deps import get_current_user
 from app.email_service import dispatch_email
 from app.fraud_engine import run_fraud_checks
+from app.storage import CLAIMS_UPLOADS_DIR
 
 router = APIRouter(prefix="/claims", tags=["Claims"])
 
@@ -67,7 +68,7 @@ def upload_file_to_s3(file: UploadFile, claim_id: int) -> str:
     Returns the URL that the frontend will use to access the file.
     """
     bucket_name = "claims-bucket"
-    upload_dir = os.path.join("uploads", bucket_name, f"claim_{claim_id}")
+    upload_dir = os.path.join(CLAIMS_UPLOADS_DIR, f"claim_{claim_id}")
     os.makedirs(upload_dir, exist_ok=True)
 
     file_extension = file.filename.split('.')[-1] if '.' in file.filename else ''
@@ -83,7 +84,7 @@ def upload_file_to_s3(file: UploadFile, claim_id: int) -> str:
         file.file.close()
 
     # Simulated S3 URL (served by FastAPI static mount)
-    url = f"/api/uploads/{bucket_name}/claim_{claim_id}/{file_key}"
+    url = f"/uploads/{bucket_name}/claim_{claim_id}/{file_key}"
     return url
 
 
@@ -383,8 +384,12 @@ def delete_document(
         raise HTTPException(status_code=404, detail="Claim not found")
 
     # Delete the physical file from simulated S3
-    # file_url looks like: /api/uploads/claims-bucket/claim_1/abc.jpg
-    local_path = doc.file_url.replace("/api/", "")
+    # file_url looks like: /uploads/claims-bucket/claim_1/abc.jpg
+    local_path = os.path.join(
+        CLAIMS_UPLOADS_DIR,
+        f"claim_{doc.claim_id}",
+        os.path.basename(doc.file_url),
+    )
     if os.path.exists(local_path):
         os.remove(local_path)
 

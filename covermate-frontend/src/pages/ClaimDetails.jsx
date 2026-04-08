@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getClaim, uploadClaimDocument, deleteClaimDocument, updateClaim, submitClaim } from '../services/claimService';
-import { API_URL } from '../services/api';
+import { buildApiUrl } from '../services/api';
 
 const STATUS_ORDER = ['draft', 'submitted', 'under_review', 'approved', 'paid'];
 const STATUS_LABELS = {
@@ -419,9 +419,7 @@ export default function ClaimDetails() {
                         ) : (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                 {claim.documents?.map(doc => {
-                                    const fileUrl = doc.file_url.startsWith('http') 
-                                        ? doc.file_url 
-                                        : `${API_URL}${doc.file_url}`;
+                                    const fileUrl = buildApiUrl(doc.file_url);
                                     const isImage = doc.file_url.match(/\.(jpg|jpeg|png)$/i);
                                     const docLabel = DOC_TYPE_LABELS[doc.doc_type] || doc.doc_type || 'Document';
                                     const isBeingDeleted = deleting === doc.id;

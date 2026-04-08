@@ -9,6 +9,8 @@ To run:
     uvicorn app.main:app --reload
 """
 
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -20,6 +22,7 @@ from app.routes import (
     addon_routes, network_routes, vehicle_routes, policy_pdf_routes,
 )
 from fastapi.staticfiles import StaticFiles
+from app.storage import POLICY_UPLOADS_DIR, UPLOADS_ROOT
 
 # ─────────────────── Create App ───────────────────
 app = FastAPI(
@@ -43,7 +46,6 @@ app.add_middleware(
 # ─────────────────── Create DB Tables ───────────────────
 # This reads all the model classes (User, Provider, Policy, …) and
 # creates the corresponding PostgreSQL tables if they don't exist yet.
-Base.metadata.create_all(bind=engine)
 
 # ─────────────────── Include Routers ───────────────────
 app.include_router(auth_routes.router)
@@ -59,10 +61,14 @@ app.include_router(vehicle_routes.router)
 app.include_router(policy_pdf_routes.router)
 
 # ─────────────────── Mount Static Files ───────────────────
-import os
-os.makedirs("uploads", exist_ok=True)
-os.makedirs("uploads/policies", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+os.makedirs(UPLOADS_ROOT, exist_ok=True)
+os.makedirs(POLICY_UPLOADS_DIR, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=UPLOADS_ROOT), name="uploads")
+
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 
 # ─────────────────── Root Health Check ───────────────────

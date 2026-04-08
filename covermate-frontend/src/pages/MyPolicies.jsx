@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMyPolicies, cancelPolicy } from '../services/policyService';
 import api from '../services/api';
-import { API_URL } from '../services/api';
+import { buildApiUrl } from '../services/api';
 
 const STATUS_STYLES = {
     active: { color: '#22c55e', bg: 'rgba(34,197,94,0.1)', label: 'Active' },
@@ -74,8 +74,7 @@ export default function MyPolicies() {
         setPdfLoading(upId);
         try {
             const { data } = await api.post(`/user-policies/${upId}/generate-pdf`);
-            // open the PDF in a new tab
-            window.open(`http://localhost:8000${data.pdf_url}`, '_blank');
+            window.open(buildApiUrl(data.pdf_url), '_blank');
             showToast('📄 Policy document ready!');
         } catch (err) {
             showToast(err?.response?.data?.detail || '❌ Failed to generate PDF.');

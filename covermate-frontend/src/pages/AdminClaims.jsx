@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
     getAllClaims, acceptClaim, rejectClaim, requestMoreInfo, updateClaimStatus,
 } from '../services/adminService';
-import api from '../services/api';
+import { buildApiUrl } from '../services/api';
 
 // ── Status config ──
 const STATUS_CONFIG = {
@@ -263,7 +263,7 @@ export default function AdminClaims() {
 
     const handleExport = () => {
         const token = localStorage.getItem('access_token');
-        window.open(`http://localhost:8000/admin/claims/export?token=${token}`, '_blank');
+        window.open(buildApiUrl(`/admin/claims/export?token=${token}`), '_blank');
     };
 
     return (

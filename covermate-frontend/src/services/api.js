@@ -3,7 +3,16 @@ import axios from 'axios';
 // ─── Create Axios Instance ───
 // All API calls go through this instance so headers and
 // token refresh are handled automatically.
-export const API_URL = 'http://localhost:8000';
+const DEFAULT_API_URL = 'http://localhost:8001';
+const rawApiUrl = import.meta.env.VITE_API_URL || DEFAULT_API_URL;
+
+export const API_URL = rawApiUrl.replace(/\/+$/, '');
+
+export function buildApiUrl(path = '') {
+    if (!path) return API_URL;
+    if (/^https?:\/\//i.test(path)) return path;
+    return `${API_URL}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 const api = axios.create({
     baseURL: API_URL,
@@ -34,7 +43,7 @@ api.interceptors.response.use(
             const refreshToken = localStorage.getItem('refresh_token');
             if (refreshToken) {
                 try {
-                    const res = await axios.post(`${API_URL}/auth/refresh`, {
+                    const res = await axios.post(buildApiUrl('/auth/refresh'), {
                         refresh_token: refreshToken,
                     });
 
